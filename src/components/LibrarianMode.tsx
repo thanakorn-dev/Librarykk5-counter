@@ -27,9 +27,14 @@ export default function LibrarianMode({ entries, onAddEntry, onBulkAdd, onClearA
     'ม.1', 'ม.2', 'ม.3', 'ม.4', 'ม.5', 'ม.6', 'ครู', 'ผู้บริหาร', 'เจ้าหน้าที่', 'บุคคลภายนอก'
   ];
 
-  // Calculate current counts for the incremental grid
+  // Calculate current counts for the incremental grid for today only
   const getCellCount = (gender: Gender, role: UserRole): number => {
-    return entries.filter(e => e.gender === gender && e.role === role).length;
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    const todayStr = `${year}-${month}-${day}`;
+    return entries.filter(e => e.date === todayStr && e.gender === gender && e.role === role).length;
   };
 
   const handleQuickAdd = (gender: Gender, role: UserRole) => {

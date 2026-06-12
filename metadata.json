@@ -1,6 +1,6 @@
 {
   "name": "Library Counter Dashboard",
-  "description": "ระบบนับจำนวนคนเข้าห้องสมุดพร้อมระบบรายงานผลรายวันแบบเรียลไทม์ (Library Counter & Dashboard) สำหรับศูนย์วิทยบริการ โรงเรียนบ้านไผ่ จังหวัดขอนแก่น สพม.25",
+  "description": "ระบบนับจำนวนคนเข้าห้องสมุดพร้อมระบบรายงานผลรายวันแบบเรียลไทม์ (Library Counter & Dashboard) สำหรับศูนย์วิทยบริการ โรงเรียนบ้านไผ่ จังหวัดขอนแก่น สพม.ขอนแก่น",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

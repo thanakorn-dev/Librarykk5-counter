@@ -17,7 +17,7 @@ export default function App() {
 
   // 1. Initial State Loading & Storage Seeding
   useEffect(() => {
-    const stored = localStorage.getItem('library_entries_v1');
+    const stored = localStorage.getItem('library_entries_v2');
     if (stored) {
       try {
         setEntries(JSON.parse(stored));
@@ -34,7 +34,7 @@ export default function App() {
   // Save changes to localStorage whenever entries update
   const saveEntries = (newEntries: LibraryEntry[]) => {
     setEntries(newEntries);
-    localStorage.setItem('library_entries_v1', JSON.stringify(newEntries));
+    localStorage.setItem('library_entries_v2', JSON.stringify(newEntries));
   };
 
   // Seeding function (test data generation)
@@ -165,7 +165,7 @@ export default function App() {
                 </div>
                 <div>
                   <h1 className="text-white text-md font-extrabold tracking-tight">ศูนย์วิทยบริการ โรงเรียนบ้านไผ่</h1>
-                  <p className="text-teal-400 text-[10px] uppercase tracking-wider font-extrabold">โรงเรียนบ้านไผ่ จังหวัดขอนแก่น สพม.25</p>
+                  <p className="text-teal-400 text-[10px] uppercase tracking-wider font-extrabold">โรงเรียนบ้านไผ่ จังหวัดขอนแก่น สพม.ขอนแก่น</p>
                 </div>
               </div>
               <button
@@ -205,7 +205,7 @@ export default function App() {
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-lg md:text-xl font-black tracking-tight text-white leading-none">ศูนย์วิทยบริการ โรงเรียนบ้านไผ่</h1>
-                  <span className="bg-teal-500 text-slate-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider">สพม.25</span>
+                  <span className="bg-teal-500 text-slate-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider">สพม.ขอนแก่น</span>
                 </div>
                 <p className="text-indigo-200 text-xs mt-1 font-semibold">
                   ระบบนับจำนวนคนเข้าห้องสมุดพร้อมระบบรายงานผลรายวันแบบเรียลไทม์ (Library Counter & Dashboard)
@@ -228,7 +228,7 @@ export default function App() {
                   <div className="absolute right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 py-2 w-48 z-10 text-slate-700 text-xs font-semibold">
                     <button
                       onClick={() => {
-                        if (confirm('คุณต้องการโหลดข้อมูลตัวอย่างสำหรับการสาธิต (ประมาณ 138 รายการเรียลไทม์) ใช่หรือไม่?')) {
+                        if (confirm('คุณต้องการโหลดข้อมูลตัวอย่างสำหรับการสาธิต (ประมาณ 1,000 รายการต่อวันสะสม) ใช่หรือไม่?')) {
                           reseedTestData();
                         }
                         setShowSettingsDropdown(false);
@@ -260,7 +260,7 @@ export default function App() {
                 title="ล็อคหน้าจอไอแพดเพื่อตั้งเป้าให้นักเรียนแตะเลือก"
               >
                 <Maximize className="w-4 h-4" />
-                ตู้บริการเต็มหน้าจอ
+                ลงชื่อเข้าใช้เต็มหน้าจอ
               </button>
             </div>
 
@@ -288,7 +288,7 @@ export default function App() {
               id="tab-kiosk"
             >
               <Monitor className="w-4 h-4" />
-              ลงชื่อเข้าใช้บริการ (Kiosk View)
+              ลงชื่อเข้าใช้บริการ
             </button>
 
             {/* Tab 3: Librarian Incrementor */}

@@ -21,7 +21,6 @@ export function getTodayDateString(): string {
 }
 
 export function generateInitialEntries(): LibraryEntry[] {
-  const today = getTodayDateString();
   const entries: LibraryEntry[] = [];
   
   const roles: UserRole[] = [
@@ -53,64 +52,77 @@ export function generateInitialEntries(): LibraryEntry[] {
   });
 
   const genders: Gender[] = ['ชาย', 'หญิง'];
+  const todayStr = getTodayDateString();
   
-  // Target 145 entries for today
-  const entriesCount = 138;
+  // Generate historical data for the last 15 days (highly comprehensive and responsive)
+  const dateList: string[] = [];
+  for (let i = 15; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    dateList.push(`${year}-${month}-${day}`);
+  }
   
-  // Distribute over opening hours (7:00 to 17:59)
-  // peak hours: Lunch break (11:00 - 13:00) and after school (15:00 - 17:00)
-  for (let i = 0; i < entriesCount; i++) {
-    const role = randomChoice(weightedRoles);
+  let idxGlobal = 0;
+  
+  dateList.forEach((dateString) => {
+    const isToday = dateString === todayStr;
+    // Support around 1,000 users per day (highly realistic and beautifully distributed from 950 to 1,080)
+    const entriesCount = isToday ? 1012 : Math.floor(Math.random() * 130) + 950;
     
-    // Some minor gender distribution skewing
-    const gender = randomChoice(genders);
+    const dayEntries: LibraryEntry[] = [];
     
-    // Hour generation based on peak times
-    let hour = 8;
-    const r = Math.random();
-    if (r < 0.1) {
-      hour = 7; // Early morning standard arrival
-    } else if (r < 0.25) {
-      hour = 8 + Math.floor(Math.random() * 3); // 8, 9, 10
-    } else if (r < 0.65) {
-      hour = 11 + Math.floor(Math.random() * 2); // 11, 12 (Lunch break - high peak)
-    } else if (r < 0.75) {
-      hour = 13 + Math.floor(Math.random() * 2); // 13, 14
-    } else if (r < 0.95) {
-      hour = 15 + Math.floor(Math.random() * 3); // 15, 16, 17 (After school - high peak)
-    } else {
-      hour = 18; // library closing hours
+    for (let i = 0; i < entriesCount; i++) {
+      const role = randomChoice(weightedRoles);
+      const gender = randomChoice(genders);
+      
+      // Hour generation based on peak times
+      let hour = 8;
+      const r = Math.random();
+      if (r < 0.1) {
+        hour = 7; // Early morning standard arrival
+      } else if (r < 0.25) {
+        hour = 8 + Math.floor(Math.random() * 3); // 8, 9, 10
+      } else if (r < 0.65) {
+        hour = 11 + Math.floor(Math.random() * 2); // 11, 12 (Lunch break - high peak)
+      } else if (r < 0.75) {
+        hour = 13 + Math.floor(Math.random() * 2); // 13, 14
+      } else if (r < 0.95) {
+        hour = 15 + Math.floor(Math.random() * 3); // 15, 16, 17 (After school - high peak)
+      } else {
+        hour = 18; // library closing hours
+      }
+      
+      const minutes = Math.floor(Math.random() * 60);
+      const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      
+      const channel = Math.random() < 0.65 ? 'Kiosk' : (Math.random() < 0.8 ? 'Librarian' : 'Bulk');
+      const timestampStr = `${dateString}T${timeString}:00`;
+      
+      dayEntries.push({
+        id: `mock-${idxGlobal++}-${Math.random().toString(36).substring(2, 7)}`,
+        queue: 0, // will be sorted and assigned hereafter
+        timestamp: timestampStr,
+        date: dateString,
+        time: timeString,
+        gender,
+        role,
+        channel,
+      });
     }
     
-    const minutes = Math.floor(Math.random() * 60);
-    const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    // Sort by time within the day to assign queue logically
+    dayEntries.sort((a, b) => a.time.localeCompare(b.time));
     
-    const channel = Math.random() < 0.65 ? 'Kiosk' : (Math.random() < 0.8 ? 'Librarian' : 'Bulk');
-    
-    // unique timestamp
-    const timestampStr = `${today}T${timeString}:00`;
-    
-    entries.push({
-      id: `mock-${i}-${Math.random().toString(36).substring(2, 7)}`,
-      queue: 0, // will be sorted and assigned hereafter
-      timestamp: timestampStr,
-      date: today,
-      time: timeString,
-      gender,
-      role,
-      channel,
+    // Assign correct daily queue number
+    dayEntries.forEach((entry, idx) => {
+      entry.queue = idx + 1;
     });
-  }
-
-  // Sort by time to make queue logical
-  entries.sort((a, b) => {
-    return a.time.localeCompare(b.time);
+    
+    entries.push(...dayEntries);
   });
-
-  // Assign correct queue order numbers
-  entries.forEach((entry, idx) => {
-    entry.queue = idx + 1;
-  });
-
+  
   return entries;
 }
