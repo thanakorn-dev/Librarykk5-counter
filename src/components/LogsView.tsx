@@ -5,7 +5,7 @@ import { LibraryEntry, UserRole, Gender } from '../types';
 
 interface LogsViewProps {
   entries: LibraryEntry[];
-  onDeleteEntry: (id: string) => void;
+  onDeleteEntry: (id: string, detailMsg?: string) => void;
 }
 
 export default function LogsView({ entries, onDeleteEntry }: LogsViewProps) {
@@ -448,9 +448,7 @@ export default function LogsView({ entries, onDeleteEntry }: LogsViewProps) {
                       <td className="p-4 text-center">
                         <button
                           onClick={() => {
-                            if (confirm(`คุณต้องการลบลำดับคิว #${entry.queue} ของวันที่ ${formatThaiDateStrShort(entry.date)} (เพศ${entry.gender} : ${entry.role}) ใช่หรือไม่?`)) {
-                              onDeleteEntry(entry.id);
-                            }
+                            onDeleteEntry(entry.id, `ลำดับคิว #${entry.queue} ของวันที่ ${formatThaiDateStrShort(entry.date)} (เพศ${entry.gender} : ${entry.role})`);
                           }}
                           className="p-1 px-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-150 hover:border-rose-200 text-rose-600 rounded-lg transition-colors cursor-pointer"
                           title="ลบสถิติรายการนี้"
